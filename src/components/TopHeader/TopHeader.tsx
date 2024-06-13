@@ -11,7 +11,7 @@ const TopHeader = () => {
             Summer Sale For All Swim Suits And Free Express Delivery - OFF 50%!
           </p>
           <Link href={'/'} className="font-semibold">
-            Shop now
+            Shop noww
           </Link>
         </div>
         <LocaleSwitcher />

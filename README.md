@@ -34,3 +34,20 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+# ########################### NOTE #################################
+1. Để chạy project: Mở Terminal, gõ `npm run dev` hoặc `yarn dev`
+
+2. Push code lên github: Mở Terminal, gõ từng lệnh sau:
+ - `git checkout -b <Tên_nhánh>` 
+
+ - `git add .`
+
+ - `git commit -m "<message>" `
+     # <message> dựa theo:
+     -- fix: thực hiện fix bug 
+     -- feat: thêm một chức năng mới
+     -- style: thực hiện thay đổi UI của dự án mà không ảnh hưởng đến logic.
+     # Ví dụ, khi thêm giao diện trang login, commit như sau
+          git commit -m "feat: add login interface"
+ -  `git push -u origin <Tên_nhánh>`
