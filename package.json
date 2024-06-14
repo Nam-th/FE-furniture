@@ -18,6 +18,8 @@
     "antd": "^5.17.0",
     "bootstrap": "^5.3.3",
     "clsx": "^2.1.1",
+    "imagesloaded": "^5.0.0",
+    "isotope-layout": "^3.0.6",
     "next": "14.2.3",
     "next-intl": "^3.15.0",
     "normalize.css": "^8.0.1",
@@ -28,6 +30,8 @@
     "zod": "^3.23.5"
   },
   "devDependencies": {
+    "@types/imagesloaded": "^4.1.6",
+    "@types/isotope-layout": "^3.0.13",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

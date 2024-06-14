@@ -11,10 +11,11 @@ const Footer = () => {
               <div className="footer-logo mr-50">
                 <a href="index.html">
                   <Image
-                    src={'/public/images/core-img/logo.png'}
+                    src={'/images/core-img/logo.png'}
                     alt="logo"
                     width={100}
                     height={30}
+                    layout="responsive"
                   />
                 </a>
               </div>

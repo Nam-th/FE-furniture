@@ -27,7 +27,7 @@ export default function RootLayout({
         {/* <AntdRegistry> */}
         <div className="main-content-wrapper d-flex clearfix">
           <Header />
-          <main>{children}</main>
+          {children}
         </div>
         <Newsletter />
         <Footer />
