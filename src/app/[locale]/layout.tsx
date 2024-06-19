@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '@/styles/globals.css';
 import { Footer, Header } from '@/components';
-// import { AntdRegistry } from '@ant-design/nextjs-registry';
+import { AntdRegistry } from '@ant-design/nextjs-registry';
 import '../../styles/core-style.css';
 import '../../styles/style.css';
 import Newsletter from '@/components/Newsletter/Newsletter';
@@ -23,15 +23,16 @@ export default function RootLayout({
   return (
     <html lang={locale}>
       <head></head>
+
       <body className={inter.className} suppressHydrationWarning={true}>
-        {/* <AntdRegistry> */}
-        <div className="main-content-wrapper d-flex clearfix">
-          <Header />
-          {children}
-        </div>
-        <Newsletter />
-        <Footer />
-        {/* </AntdRegistry> */}
+        <AntdRegistry>
+          <div className="main-content-wrapper d-flex clearfix font-helveticaMedium">
+            <Header />
+            {children}
+          </div>
+          <Newsletter />
+          <Footer />
+        </AntdRegistry>
       </body>
     </html>
   );

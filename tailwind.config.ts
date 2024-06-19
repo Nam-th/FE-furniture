@@ -20,6 +20,9 @@ const config: Config = {
         success: '#00BA88',
         warning: '#F4B740',
       },
+      fontFamily: {
+        helveticaMedium: ['HelveticaNeueMedium', 'sans-serif'],
+      },
     },
   },
   plugins: [],
