@@ -63,4 +63,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
  # 4. Pull code #
 
- -   `git pull origin master`
+ -   `git pull origin main`

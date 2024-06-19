@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '@/styles/globals.css';
-import { Footer, Header } from '@/components';
+import { Footer, Header, Newsletter } from '@/components';
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import '../../styles/core-style.css';
 import '../../styles/style.css';
-import Newsletter from '@/components/Newsletter/Newsletter';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
