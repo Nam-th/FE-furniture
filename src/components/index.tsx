@@ -7,3 +7,6 @@ export { default as WishList } from './WishList';
 export { default as LocaleSwitcher } from './LocaleSwitcher';
 export { default as LocaleSwitcherSelect } from './LocaleSwitcherSelect';
 export { default as CardProduct } from './CardProduct';
+export { default as CardProductShop } from './CardProductShop';
+export { default as Newsletter } from './Newsletter';
+export { default as Rating } from './Rating';

@@ -8,16 +8,22 @@
 @import url(./nice-select.css);
 /* styles/globals.css */
 
-/* @font-face {
+@font-face {
   font-family: 'helveticaneuebold';
-  src: url("/fonts/helvetica_neu_bold-webfont.woff2") format("woff2"), url("/fonts/helvetica_neu_bold-webfont.woff") format("woff");
+  src:
+    url('/fonts/helvetica_neu_bold-webfont.woff2') format('woff2'),
+    url('/fonts/helvetica_neu_bold-webfont.woff') format('woff');
   font-weight: normal;
-  font-style: normal; } */
-/* @font-face {
+  font-style: normal;
+}
+@font-face {
   font-family: 'helveticaneuemedium';
-  src: url("/fonts/helveticaneue_medium-webfont.woff2") format("woff2"), url("/fonts/helveticaneue_medium-webfont.woff") format("woff");
+  src:
+    url('/fonts/helveticaneue_medium-webfont.woff2') format('woff2'),
+    url('/fonts/helveticaneue_medium-webfont.woff') format('woff');
   font-weight: normal;
-  font-style: normal; } */
+  font-style: normal;
+}
 @font-face {
   font-family: 'HelveticaNeueMedium';
   src: url('/fonts/helveticaneue_medium-webfont') format('truetype');
@@ -1950,7 +1956,3 @@ button {
   border-radius: 0;
   background-color: #f5f7fa;
 }
-
-/* ##### The End ##### */
-
-/*# sourceMappingURL=core-style.css.map */
