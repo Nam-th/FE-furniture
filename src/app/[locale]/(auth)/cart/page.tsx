@@ -8,7 +8,7 @@ const CartPage = () => {
         <div className="row">
           <div className="col-12 col-lg-8">
             <div className="cart-title mt-50">
-              <h2>Shopping Cart</h2>
+              <h2 className="font-semibold">Shopping Cart</h2>
             </div>
 
             <div className="cart-table clearfix">
@@ -124,7 +124,7 @@ const CartPage = () => {
           </div>
           <div className="col-12 col-lg-4">
             <div className="cart-summary">
-              <h5>Cart Total</h5>
+              <h5 className="font-semibold">Cart Total</h5>
               <ul className="summary-table">
                 <li>
                   <span>subtotal:</span> <span>$140.00</span>
