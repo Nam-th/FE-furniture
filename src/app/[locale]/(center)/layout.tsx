@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: 'A e-commerce website',
 };
 
-export default function RootLayout({
+export default function AuthLayout({
   children,
   params: { locale },
 }: Readonly<{
