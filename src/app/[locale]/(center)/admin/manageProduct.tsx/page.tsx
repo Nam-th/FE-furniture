@@ -1,7 +1,5 @@
 import React from 'react';
 
-const Header = () => {
+export default function ManageProductPage() {
   return <div></div>;
-};
-
-export default Header;
+}

@@ -9,7 +9,7 @@ const Header = () => {
         <i className="fa fa-close" aria-hidden="true"></i>
       </div>
       {/* Logo */}
-      <div className="logo">
+      <div className="logo scale-[1.44]">
         <a href="index.html">
           <Image
             src="/images/core-img/logo.png"
