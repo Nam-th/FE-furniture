@@ -57,6 +57,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
      -- style: thực hiện thay đổi UI của dự án mà không ảnh hưởng đến logic.
      # Ví dụ, khi thêm giao diện trang login, commit như sau
           git commit -m "feat: add login interface"
+        [('--no-verify')]
 
  -  `git push -u origin <Tên_nhánh>`
 

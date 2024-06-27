@@ -3,8 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Image from 'next/image';
 const Footer = () => {
   return (
-    <footer className="footer_area clearfix">
-      <div className="container">
+    <footer className="footer_area clearfix ">
+      <div className="container max-w-[1320px]">
         <div className="row align-items-center">
           <div className="col-12 col-lg-4">
             <div className="single_widget_area">
@@ -59,8 +59,8 @@ const Footer = () => {
                     id="footerNavContent"
                   >
                     <ul className="navbar-nav ml-auto">
-                      <li className="nav-item active">
-                        <a className=" " href="index.html">
+                      <li className="nav-item">
+                        <a className="nav-link" href="index.html">
                           Home
                         </a>
                       </li>

@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const Newsletter = () => {
   return (
     <section className="newsletter-area section-padding-100-0">
-      <div className="container">
+      <div className="container max-w-[1320px]">
         <div className="row align-items-center">
           {/* <!-- Newsletter Text --> */}
           <div className="col-12 col-lg-6 col-xl-7">

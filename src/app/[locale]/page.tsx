@@ -1,9 +1,13 @@
 'use client';
 import CartProduct from '@/components/CardProduct/CardProduct';
 import React, { useEffect, useRef } from 'react';
+import '@/styles/globals.css';
 import Isotope from 'isotope-layout';
 import imagesLoaded from 'imagesloaded';
 import Product from '@/types/Product';
+import { Footer, Header, Newsletter } from '@/components';
+import '../../styles/core-style.css';
+import '../../styles/style.css';
 const Home = () => {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -80,19 +84,26 @@ const Home = () => {
   ];
 
   return (
-    <div className="products-catagories-area clearfix">
-      <div ref={containerRef} className="amado-pro-catagory clearfix">
-        {products.map((product: Product) => (
-          <CartProduct
-            key={product.id}
-            id={product.id}
-            thumbnail={product.thumbnail}
-            price={product.price}
-            name={product.name}
-          />
-        ))}
+    <>
+      <div className="main-content-wrapper d-flex clearfix font-helveticaMedium">
+        <Header />
+        <div className="products-catagories-area clearfix">
+          <div ref={containerRef} className="amado-pro-catagory clearfix">
+            {products.map((product: Product) => (
+              <CartProduct
+                key={product.id}
+                id={product.id}
+                thumbnail={product.thumbnail}
+                price={product.price}
+                name={product.name}
+              />
+            ))}
+          </div>
+        </div>
       </div>
-    </div>
+      <Newsletter />
+      <Footer />
+    </>
   );
 };
 

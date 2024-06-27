@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import '@/styles/globals.css';
-import { Footer, Header, Newsletter } from '@/components';
-import { AntdRegistry } from '@ant-design/nextjs-registry';
+// import '@/styles/globals.css';
 import '../../styles/core-style.css';
 import '../../styles/style.css';
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
@@ -24,14 +23,7 @@ export default function RootLayout({
       <head></head>
 
       <body className={inter.className} suppressHydrationWarning={true}>
-        <AntdRegistry>
-          <div className="main-content-wrapper d-flex clearfix font-helveticaMedium">
-            <Header />
-            {children}
-          </div>
-          <Newsletter />
-          <Footer />
-        </AntdRegistry>
+        {children}
       </body>
     </html>
   );
