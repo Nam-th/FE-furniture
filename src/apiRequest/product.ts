@@ -7,8 +7,18 @@ const productApiRequest = {
           http.get(`/api/v1/products/pagination?page=${page}&size=${size}&sort_by=${sortBy}&sort_order=${sortOrder}`)
      ),
      create: (body: CreateProductBodyType) => (
-          http.post<ProductResType>(``, body)
+          http.post<ProductResType>(`/api/v1/products`, body)
      ),
+     uploadImage: (body: FormData) =>
+          http.post<{
+            message: string
+            data: string
+          }>('api/v1/uploads', body, {
+               headers: {
+                    'Content-Type': ''
+               },
+               mode: 'no-cors'
+          }),
 }
 
 export default productApiRequest

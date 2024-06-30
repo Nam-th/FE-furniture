@@ -1,16 +1,9 @@
 import productApiRequest from '@/apiRequest/product';
 import React from 'react';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
+
 import PaginationComponent from '@/components/Pagination/Pagination';
 import Table from '@/components/Table/product.table';
+import AddProductDialog from '@/components/Dialog/AddProductDialog';
 
 export default async function ManageProductPage({
   searchParams,
@@ -22,25 +15,20 @@ export default async function ManageProductPage({
   const sortBy = searchParams['sort_by']?.toString() ?? 'id'; //Sắp xếp theo thuộc tính, vd: sắp xếp theo 'id'
   const sortOrder = searchParams['sort_order']?.toString() ?? 'asc'; // Sắp xếp tăng dần | giảm dần
 
-  // Lấy từ item [start] tới [end] trên 1 trang dựa theo index của item trong danh sách
-  //   const start = (Number(page) - 1) * Number(size); // 2 sp trên 1 trang => trang 1 lấy từ item[0] -> ...;; trang 2 lấy từ item[2] -> ...
-  //   const end = start + Number(size)
-
-  // gọi API getList products
-  // products/pagination?page=${page}&size=${size}&sort_by=${sortBy}&sort_order=${sortOrder}`
   const { payload }: any = await productApiRequest.getList(
     page,
     size,
     sortBy,
     sortOrder,
   );
-  //   console.log(payload);
+
+  console.log(payload);
   const products = payload.data.items;
-  console.log(payload.data);
   const totalPage = payload.data.totalPages
+
   return (
     <div>
-      
+      <AddProductDialog/>
      <Table data = {products}/>
      <div className='py-3'></div>
       <PaginationComponent totalPage={totalPage} size={size} />
