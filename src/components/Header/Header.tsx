@@ -1,6 +1,7 @@
 import React from 'react';
 import Navbar from '../Navbar';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Header = () => {
   return (
@@ -10,14 +11,14 @@ const Header = () => {
       </div>
       {/* Logo */}
       <div className="logo scale-[1.44]">
-        <a href="index.html">
+        <Link href="index.html">
           <Image
             src="/images/core-img/logo.png"
             alt="Logo"
             width={160}
             height={50}
           />
-        </a>
+        </Link>
       </div>
 
       {/* Amado Nav */}
@@ -25,40 +26,46 @@ const Header = () => {
 
       {/* Button Group */}
       <div className="amado-btn-group mt-30 mb-100">
-        <a href="#" className="button button-primary">
+        <Link href="#" className="button button-primary">
           Sign in
-        </a>
-        <a href="#" className="button button-secondary mt-3">
+        </Link>
+        <Link href="#" className="button button-secondary mt-3">
           Sign up
-        </a>
+        </Link>
+        <Link
+          href="/vi/admin/manageProduct"
+          className="button button-primary mt-3 w-[117px]"
+        >
+          Admin
+        </Link>
       </div>
       {/* Cart Menu */}
       <div className="cart-fav-search mb-100">
-        <a href="cart.html" className="cart-nav">
+        <Link href="cart.html" className="cart-nav">
           {' '}
           Cart <span>(0)</span>
-        </a>
-        <a href="#" className="fav-nav">
+        </Link>
+        <Link href="#" className="fav-nav">
           Favourite
-        </a>
-        <a href="#" className="search-nav">
+        </Link>
+        <Link href="#" className="search-nav">
           Search
-        </a>
+        </Link>
       </div>
       {/* Social Button */}
       <div className="social-info d-flex justify-content-between">
-        <a href="#">
+        <Link href="#">
           <i className="fa fa-pinterest" aria-hidden="true"></i>
-        </a>
-        <a href="#">
+        </Link>
+        <Link href="#">
           <i className="fa fa-instagram" aria-hidden="true"></i>
-        </a>
-        <a href="#">
+        </Link>
+        <Link href="#">
           <i className="fa fa-facebook" aria-hidden="true"></i>
-        </a>
-        <a href="#">
+        </Link>
+        <Link href="#">
           <i className="fa fa-twitter" aria-hidden="true"></i>
-        </a>
+        </Link>
       </div>
     </header>
   );

@@ -16,7 +16,11 @@ class HttpError extends Error {
 }
 
 const request = async <Response>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', url: string, options?: CustomOptions | undefined) => {
-     const body = options?.body ? JSON.stringify(options.body) : undefined
+
+     const body = options?.body 
+     ? (options.body instanceof FormData ? options.body : JSON.stringify(options.body))
+     : undefined
+
      const baseHeaders = {
           'Content-Type': 'application/json',
      }
@@ -27,7 +31,7 @@ const request = async <Response>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', url:
 
      // Xử lí nếu truyền url thiếu dấu '/'
      // Eg: fetch API account/me => /account/me ==> localhost:8080/account/me
-     const fullUrl = url.startsWith('/') ? `${baseUrl}$url` : `${baseUrl}/$url`
+     const fullUrl = url.startsWith('/') ? `${baseUrl}${url}` : `${baseUrl}/${url}`
 
      const res = await fetch(fullUrl, {
           ...options,
@@ -37,14 +41,14 @@ const request = async <Response>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', url:
 
           },
           body,
-          method
+          method,
      })
 
      const payload: Response = await res.json();
 
      const data = {
           status: res.status,
-          payload
+          payload: payload
      }
 
      if (!res.ok) {

@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { Menu } from 'antd';
 
 import type { MenuProps } from 'antd';
+import Image from 'next/image';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -29,12 +30,13 @@ function getItem(
 }
 
 const items: MenuItem[] = [
+  getItem(<Link href="/vi">Home</Link>, '1', <DesktopOutlined />),
+
   getItem(
-    <Link href="https://www.facebook.com/">Product</Link>,
-    '1',
+    <Link href="/vi/admin/manageProduct">Product</Link>,
+    '2',
     <PieChartOutlined />,
   ),
-  getItem('Option 2', '2', <DesktopOutlined />),
   getItem('User', 'sub1', <UserOutlined />, [
     getItem('Tom', '3'),
     getItem('Bill', '4'),
@@ -49,11 +51,24 @@ const items: MenuItem[] = [
 
 export default function MenuAdmin() {
   return (
-    <Menu
-      theme="dark"
-      defaultSelectedKeys={['1']}
-      mode="inline"
-      items={items}
-    />
+    <>
+      <Link href={'/'}>
+        <Image
+          src="/images/core-img/logo2.png"
+          className="my-4 scale-[0.85]"
+          alt="logo"
+          width={100}
+          height={60}
+          layout="responsive"
+        />
+      </Link>
+
+      <Menu
+        theme="dark"
+        defaultSelectedKeys={['1']}
+        mode="inline"
+        items={items}
+      />
+    </>
   );
 }
