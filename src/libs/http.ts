@@ -16,7 +16,7 @@ class HttpError extends Error {
 }
 
 const request = async <Response>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', url: string, options?: CustomOptions | undefined) => {
-     
+
      const body = options?.body 
      ? (options.body instanceof FormData ? options.body : JSON.stringify(options.body))
      : undefined
@@ -41,7 +41,7 @@ const request = async <Response>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', url:
 
           },
           body,
-          method
+          method,
      })
 
      const payload: Response = await res.json();
