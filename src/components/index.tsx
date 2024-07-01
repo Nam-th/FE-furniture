@@ -11,3 +11,4 @@ export { default as CardProductShop } from './CardProductShop';
 export { default as Newsletter } from './Newsletter';
 export { default as Rating } from './Rating';
 export { default as Pagination } from './Pagination';
+export { default as HomeProduct } from './HomeProduct';
