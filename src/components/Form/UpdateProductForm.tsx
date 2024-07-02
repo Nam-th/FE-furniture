@@ -81,7 +81,7 @@ export default function UpdateProductForm({ product }: { product: Product }) {
         ...values,
         thumbnail: image,
       };
-      const updateProductResponse = await fetch(`http://localhost:8080/api/v1/products/${idUpdate}`,
+      const updateProductResponse = await fetch(`http://localhost:8080/api/v1/products/5`,
         {
           method: 'PUT',
           headers: {
@@ -204,7 +204,7 @@ export default function UpdateProductForm({ product }: { product: Product }) {
               </FormItem>
             )}
           />
-          {/* {(file || imageUrl) && (
+          {(file || imageUrl) && (
             <div>
               <Image
                 src={file ? URL.createObjectURL(file) : imageUrl}
@@ -229,7 +229,7 @@ export default function UpdateProductForm({ product }: { product: Product }) {
                 Delete
               </Button>
             </div>
-          )} */}
+          )}
           <Button type="submit">
             Save changes
           </Button>

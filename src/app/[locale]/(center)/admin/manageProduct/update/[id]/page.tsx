@@ -1,3 +1,4 @@
+import AddProductForm from '@/components/Form/AddProductForm';
 import UpdateProductForm from '@/components/Form/UpdateProductForm';
 import envConfig from '@/libs/env';
 import axios from 'axios';
@@ -28,7 +29,7 @@ export default async function UpdateProduct({
           />
         </div>
         <div>
-          <UpdateProductForm product={product} />
+          <AddProductForm product={product} />
         </div>
       </section>
     </>

@@ -3,6 +3,7 @@ import React from 'react';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { ProductType } from '@/schema/product.schema';
 import Link from 'next/link';
+import DeleteProductBtn from '../Button/DeleteProductBtn';
 
 interface IProductProps {
   id: number;
@@ -29,7 +30,10 @@ const ProductItem: React.FC<IProductProps> = ({
   
   return (
     <>
-      <tr className='bg-white hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600'>
+      <tr className='bg-white border-b-2 hover:bg-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600'>
+        <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+          {id}
+        </td>
         <td className="p-4">
           <Image
             src={thumbnail || '/images/core-img/not_found_image.jpg'}
@@ -43,11 +47,12 @@ const ProductItem: React.FC<IProductProps> = ({
           {name}
         </td>
         <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-          {stockQuantity}
-        </td>
-        <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
           {price ? `$${price}` : "Not set"}
         </td>
+        <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
+          {stockQuantity}
+        </td>
+        
         <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
           {sold ? sold : 0}
         </td>
@@ -58,9 +63,7 @@ const ProductItem: React.FC<IProductProps> = ({
             <div className="ml-4 h-3 w-3 rounded-full bg-red-600"></div>
           )}
         </td>
-        <td className="px-6 py-4 font-semibold text-gray-900 dark:text-white">
-          {categoryId}
-        </td>
+        
         <td className="px-6 py-4">
           <Link
             href={`/vi/admin/manageProduct/update/${id}`}
@@ -68,12 +71,7 @@ const ProductItem: React.FC<IProductProps> = ({
           >
             <EditOutlined />
           </Link>
-          <Link
-            href="#"
-            className="text-2xl text-red-600 hover:underline dark:text-red-500"
-          >
-            <DeleteOutlined />
-          </Link>
+          <DeleteProductBtn id={id} name={name}/>
         </td>
       </tr>
     </>

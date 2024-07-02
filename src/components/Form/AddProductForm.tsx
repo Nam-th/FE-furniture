@@ -1,6 +1,6 @@
 'use client';
 import React, { useRef, useState } from 'react';
-import { message } from 'antd';
+import { Spin, message } from 'antd';
 import {
   Form,
   FormControl,
@@ -14,40 +14,46 @@ import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-import { useToast } from '@/components/ui/use-toast';
 import {
   CreateProductBody,
   CreateProductBodyType,
+  ProductResType,
+  UpdateProductBodyType,
 } from '@/schema/product.schema';
 import CategorySelection from '../Selection/CategoriesSelection';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
-export default function AddProductForm() {
+type ProductDto = ProductResType['data'];
+
+
+export default function AddProductForm({product} : {product? : ProductDto}) {
   const [file, setFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [loading, setLoading] = useState<boolean>(false)
   const [messageApi, contextHolder] = message.useMessage();
   const access_token = localStorage.getItem('access_token');
   const router = useRouter();
   const form = useForm<CreateProductBodyType>({
     resolver: zodResolver(CreateProductBody),
     defaultValues: {
-      name: '',
-      description: '',
-      price: 0,
-      quantity: 0,
-      sold: 0,
-      isAvailable: true,
-      isBestSeller: false,
-      isRemoved: false,
-      categoryId: 1,
-      imageUrl: '',
+      name: product?.name ?? '',
+      description: product?.description ?? '',
+      price: product?.price ?? 0,
+      quantity: product?.quantity ?? 0,
+      sold: product?.sold ?? 0,
+      isAvailable: product?.isAvailable ?? true,
+      isBestSeller: product?.isBestSeller ?? false,
+      isRemoved: product?.isRemoved ?? false,
+      categoryId: product?.categoryId ?? 1,
+      imageUrl: product?.thumbnail ?? '',
     },
   });
-  // 2. Define a submit handler.
-  const onSubmit = async (values: CreateProductBodyType) => {
-    
+  const imageUrl = form.watch('imageUrl');
+
+  const createProduct = async (values: CreateProductBodyType) => {
     try {
+      setLoading(true)
       const formData = new FormData();
       formData.append('image', file as Blob);
       console.log("check FormData >>",formData);
@@ -56,7 +62,8 @@ export default function AddProductForm() {
         body: formData,
         headers: {
           'Authorization': `Bearer ${access_token}`
-        }
+        },
+        cache: 'no-store'
       });
       if (!uploadImageRes.ok) {
         throw new Error(await uploadImageRes.json());
@@ -76,6 +83,7 @@ export default function AddProductForm() {
           'Authorization': `Bearer ${access_token}`,
         },
         body: JSON.stringify(productPayload),
+        cache: 'no-store'
       });
       if (!createProductResponse.ok) {
         const errorResponse = await createProductResponse.json();
@@ -83,14 +91,81 @@ export default function AddProductForm() {
       }
       messageApi.open({
         type: 'success',
-        content: 'Created the product successfully',
+        content: 'Create the product successfully',
       });
       router.push('/vi/admin/manageProduct');
       router.refresh();
     } catch (error: any) {
       alert(error);
+    } finally {
+      setLoading(false)
     }
-    console.log(values);
+  }
+  const updateProduct = async (_values: UpdateProductBodyType) => {
+    if(!product) return
+    const id = String(product.id)
+    let values=_values;
+    let image = imageUrl;
+    try {
+      setLoading(true)
+      if(file) {
+        const formData = new FormData();
+        formData.append('image', file as Blob);
+        console.log("check FormData >>",formData);
+        const uploadImageRes = await fetch('http://localhost:8080/api/v1/uploads', {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Authorization': `Bearer ${access_token}`
+          },
+          cache: 'no-store'
+        });
+        if (!uploadImageRes.ok) {
+          throw new Error(await uploadImageRes.json());
+        }
+        const uploadResult = await uploadImageRes.json();
+        
+        image = uploadResult.data
+      }
+      
+      const productPayload = {
+        ...values,
+        thumbnail: image
+      }
+      const createProductResponse = await fetch(`http://localhost:8080/api/v1/products/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${access_token}`,
+        },
+        body: JSON.stringify(productPayload),
+        cache: 'no-store'
+      });
+      if (!createProductResponse.ok) {
+        const errorResponse = await createProductResponse.json();
+        throw new Error(errorResponse.message || 'Lỗi tạo sản phẩm');
+      }
+      messageApi.open({
+        type: 'success',
+        content: 'Update the product successfully',
+      });
+      router.push('/vi/admin/manageProduct');
+      router.refresh();
+    } catch (error: any) {
+      alert(error);
+    } finally {
+      setLoading(false)
+    }
+  }
+  // 2. Define a submit handler.
+  const onSubmit = async (values: CreateProductBodyType) => {
+    if (loading) return
+    if(product) {
+      await updateProduct(values)
+    }
+    else {
+      await createProduct(values)
+    }
   }
 
   return (
@@ -197,10 +272,10 @@ export default function AddProductForm() {
               </FormItem>
             )}
           />
-          {file && (
+          {(file || imageUrl) && (
             <div>
               <Image
-                src={URL.createObjectURL(file)}
+                src={file ? URL.createObjectURL(file) : imageUrl}
                 width={128}
                 height={128}
                 alt="preview"
@@ -222,7 +297,9 @@ export default function AddProductForm() {
               </Button>
             </div>
           )}
-          <Button type="submit">Add</Button>
+          <Button type="submit" className='w-full'>
+            {!loading ? 'Save' : <Spin/>}
+          </Button>
         </form>
       </Form>
     </>

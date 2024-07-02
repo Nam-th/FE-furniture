@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 import PaginationComponent from '@/components/Pagination/Pagination';
@@ -27,8 +26,11 @@ export default async function ManageProductPage({
       <div>
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
           <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right">
-            <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+            <thead className="bg-gray-200 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
               <tr>
+                <th scope="col" className="px-2 py-3">
+                  <span className="sr-only"></span>
+                </th>
                 <th scope="col" className="px-16 py-3">
                   <span className="sr-only">Image</span>
                 </th>
@@ -36,20 +38,19 @@ export default async function ManageProductPage({
                   Product
                 </th>
                 <th scope="col" className="px-6 py-3">
-                  Qty
-                </th>
-                <th scope="col" className="px-6 py-3">
                   Price
                 </th>
+                <th scope="col" className="px-6 py-3">
+                  Qty
+                </th>
+
                 <th scope="col" className="px-6 py-3">
                   Sold
                 </th>
                 <th scope="col" className="px-6 py-3">
                   Is Available
                 </th>
-                <th scope="col" className="px-6 py-3">
-                  Category
-                </th>
+               
                 <th scope="col" className="px-6 py-3">
                   Action
                 </th>
@@ -57,19 +58,22 @@ export default async function ManageProductPage({
             </thead>
             <tbody>
               {products.map((product: any) => (
-                <ProductItem
-                  key={product.id}
-                  id={product.id}
-                  name={product.name}
-                  thumbnail={product?.thumbnail}
-                  price={product?.price}
-                  stockQuantity={product?.quantity}
-                  categoryId={product?.categoryId}
-                  isAvailable={product?.isAvailable}
-                  isBestSeller={product?.isBestSeller}
-                  sold={product?.sold}
-                />
-               
+                <>
+                  {!product?.isRemoved && (
+                    <ProductItem
+                      key={product.id}
+                      id={product.id}
+                      name={product.name}
+                      thumbnail={product?.thumbnail}
+                      price={product?.price}
+                      stockQuantity={product?.quantity}
+                      categoryId={product?.categoryId}
+                      isAvailable={product?.isAvailable}
+                      isBestSeller={product?.isBestSeller}
+                      sold={product?.sold}
+                    />
+                  )}
+                </>
               ))}
             </tbody>
           </table>
