@@ -1,6 +1,5 @@
 'use client';
-import React, { useRef, useState } from 'react';
-import { message } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Form,
   FormControl,
@@ -18,89 +17,97 @@ import { useToast } from '@/components/ui/use-toast';
 import {
   CreateProductBody,
   CreateProductBodyType,
+  ProductResType,
+  UpdateProductBodyType,
 } from '@/schema/product.schema';
 import CategorySelection from '../Selection/CategoriesSelection';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
-export default function AddProductForm() {
+type Product = ProductResType['data'];
+
+export default function UpdateProductForm({ product }: { product: Product }) {
   const [file, setFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [messageApi, contextHolder] = message.useMessage();
-  const access_token = localStorage.getItem('access_token');
+  const [access_token, setAccessToken] = useState<string | null>(null);
   const router = useRouter();
   const form = useForm<CreateProductBodyType>({
     resolver: zodResolver(CreateProductBody),
     defaultValues: {
-      name: '',
-      description: '',
-      price: 0,
-      quantity: 0,
-      sold: 0,
-      isAvailable: true,
-      isBestSeller: false,
-      isRemoved: false,
-      categoryId: 1,
-      imageUrl: '',
+      name: product?.name ?? '',
+      description: product?.description ?? '',
+      price: product?.price ?? 0,
+      quantity: product?.quantity ?? 0,
+      isAvailable: product?.isAvailable ?? true,
+      isBestSeller: product?.isBestSeller ?? false,
+      isRemoved: product?.isRemoved ?? false,
+      categoryId: product?.categoryId ?? 1,
+      imageUrl: product?.thumbnail ?? '',
     },
   });
+  useEffect(() => {
+    setAccessToken(localStorage.getItem('access_token'));
+  }, []);
+  
+  const imageUrl = form.watch('imageUrl');
+
   // 2. Define a submit handler.
-  const onSubmit = async (values: CreateProductBodyType) => {
-    
+  async function onSubmit(values: CreateProductBodyType) {
+    let image = imageUrl;
+    const idUpdate: string = product.id.toString();
+    console.log('access_token', access_token);
     try {
       const formData = new FormData();
       formData.append('image', file as Blob);
-      console.log("check FormData >>",formData);
-      const uploadImageRes = await fetch('http://localhost:8080/api/v1/uploads', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Authorization': `Bearer ${access_token}`
-        }
-      });
+      console.log('check FormData >>', formData);
+      const uploadImageRes = await fetch(
+        'http://localhost:8080/api/v1/uploads',
+        {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Authorization': `Bearer ${access_token}`,
+          },
+        },
+      );
       if (!uploadImageRes.ok) {
         throw new Error(await uploadImageRes.json());
       }
       const uploadResult = await uploadImageRes.json();
-      
-      const image = uploadResult.data
-      
-      const productPayload = {
+
+      image = uploadResult.data;
+
+      const updateData = {
         ...values,
-        thumbnail: image
+        thumbnail: image,
+      };
+      const updateProductResponse = await fetch(`http://localhost:8080/api/v1/products/${idUpdate}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Authorization': `Bearer ${access_token}`,
+          },
+          body: JSON.stringify(updateData),
+        }
+      );
+      if (!updateProductResponse.ok) {
+        const errorResponse = await updateProductResponse.json();
+        throw new Error(errorResponse.message || 'Lỗi cập nhật sản phẩm');
       }
-      const createProductResponse = await fetch('http://localhost:8080/api/v1/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${access_token}`,
-        },
-        body: JSON.stringify(productPayload),
-      });
-      if (!createProductResponse.ok) {
-        const errorResponse = await createProductResponse.json();
-        throw new Error(errorResponse.message || 'Lỗi tạo sản phẩm');
-      }
-      messageApi.open({
-        type: 'success',
-        content: 'Created the product successfully',
-      });
-      router.push('/vi/admin/manageProduct');
-      router.refresh();
+
+      // router.push('/vi/admin/manageProduct');
+      // router.refresh();
     } catch (error: any) {
       alert(error);
-    }
-    console.log(values);
+      console.log(error)
+    } 
   }
 
   return (
     <>
-      {contextHolder}
+      
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className="max-h-[70vh] space-y-8 overflow-y-auto pr-3"
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 pr-3">
           {/* Name */}
           <FormField
             control={form.control}
@@ -197,14 +204,15 @@ export default function AddProductForm() {
               </FormItem>
             )}
           />
-          {file && (
+          {/* {(file || imageUrl) && (
             <div>
               <Image
-                src={URL.createObjectURL(file)}
+                src={file ? URL.createObjectURL(file) : imageUrl}
                 width={128}
                 height={128}
                 alt="preview"
                 className="h-32 w-32 object-cover"
+                priority={true}
               />
               <Button
                 type="button"
@@ -221,8 +229,10 @@ export default function AddProductForm() {
                 Delete
               </Button>
             </div>
-          )}
-          <Button type="submit">Add</Button>
+          )} */}
+          <Button type="submit">
+            Save changes
+          </Button>
         </form>
       </Form>
     </>

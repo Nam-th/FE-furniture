@@ -1,9 +1,17 @@
+'use client';
 import React from 'react';
 import Navbar from '../Navbar';
 import Image from 'next/image';
 import Link from 'next/link';
+import { getUser, isAdmin, isAuthenticated } from '@/utils/auth';
+import { Avatar } from 'antd';
+import { LogoutOutlined } from '@ant-design/icons';
+import LogoutButton from '../LogoutButton/LogoutButton';
 
 const Header = () => {
+  const isLoggedIn = isAuthenticated();
+  const user = getUser();
+  
   return (
     <header className="header-area clearfix">
       <div className="nav-close">
@@ -21,37 +29,40 @@ const Header = () => {
         </Link>
       </div>
 
+      {isLoggedIn && (
+        <div className="pb-2 text-end relative right-6">
+          
+          <div className=" py-3 flex justify-start items-center">
+            <Avatar
+              className="mb-1 ml-3 mr-3 font-bold text-xl w-10 h-10"
+              style={{ backgroundColor: '#fde3cf', color: '#f56a00' }}
+            >
+              {user?.username.toUpperCase().charAt(0)}
+            </Avatar>
+            <span className="font-bold capitalize text-red-700">Hello, {user?.username}</span>
+            
+          </div>
+        </div>
+      )}
+
       {/* Amado Nav */}
       <Navbar />
-
+      
+    
       {/* Button Group */}
-      <div className="amado-btn-group mt-30 mb-100">
-        <Link href="#" className="button button-primary">
-          Sign in
-        </Link>
-        <Link href="#" className="button button-secondary mt-3">
-          Sign up
-        </Link>
-        <Link
-          href="/vi/admin/manageProduct"
-          className="button button-primary mt-3 w-[117px]"
-        >
-          Admin
-        </Link>
-      </div>
-      {/* Cart Menu */}
-      <div className="cart-fav-search mb-100">
-        <Link href="cart.html" className="cart-nav">
-          {' '}
-          Cart <span>(0)</span>
-        </Link>
-        <Link href="#" className="fav-nav">
-          Favourite
-        </Link>
-        <Link href="#" className="search-nav">
-          Search
-        </Link>
-      </div>
+      {!isLoggedIn ? (
+        <div className="amado-btn-group mt-30 mb-100">
+          <Link href="/vi/sign-in" className="button button-primary">
+            Sign in
+          </Link>
+          <Link href="/vi/sign-up" className="button button-secondary mt-3">
+            Sign up
+          </Link>
+        </div>
+      ): (
+        <LogoutButton/>
+      )}
+
       {/* Social Button */}
       <div className="social-info d-flex justify-content-between">
         <Link href="#">
