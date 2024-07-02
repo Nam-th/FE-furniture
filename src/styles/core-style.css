@@ -1,13 +1,14 @@
 /* [Master Stylesheet v-1.0.0] */
 /* :: :: 1.0 Import Fonts */
-@import url(./bootstrap.min.css);
+/* @import url(./bootstrap.min.css);
 @import url(./owl.carousel.css);
 @import url(./animate.css);
 @import url(./magnific-popup.css);
 @import url(./jquery-ui.min.css);
-@import url(./nice-select.css);
+@import url(./nice-select.css); */
 /* styles/globals.css */
 
+/* 
 @font-face {
   font-family: 'helveticaneuebold';
   src:
@@ -27,12 +28,12 @@
 @font-face {
   font-family: 'HelveticaNeueMedium';
   src: url('/fonts/helveticaneue_medium-webfont') format('truetype');
-  font-weight: 700; /* Medium weight */
-  font-style: normal;
-}
+  font-weight: 700;  Medium weight 
+   font-style: normal; 
+*/
 /* :: 2.0 Import All CSS */
 /* :: 3.0 Base CSS */
-* {
+/* * {
   margin: 0;
   padding: 0;
 }
@@ -40,7 +41,7 @@
 body {
   font-family: 'helveticaneuemedium';
   font-size: 16px;
-}
+} */
 
 h1,
 h2,

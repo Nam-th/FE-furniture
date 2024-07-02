@@ -1,5 +1,6 @@
 'use client'
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 
 interface ICartItem {
@@ -10,7 +11,8 @@ interface ICartItem {
      thumbnail?: string,
 }
 const CartItem: React.FC<ICartItem> = ({ productId, productName, productPrice, quantity, thumbnail }) => {
-     const [value, setValue] = useState<number>(1);
+     const [value, setValue] = useState<number>(quantity);
+     const router = useRouter()
   const decreaseQuantity = () => {
     if (value > 1) {
       setValue(value - 1);
@@ -22,9 +24,12 @@ const CartItem: React.FC<ICartItem> = ({ productId, productName, productPrice, q
       setValue(value + 1);
     }
   };
+  const onClick = () => {
+     router.push(`/vi/products/${productId}`)
+  }
   return (
     <>
-      <tr>
+      <tr onClick={onClick}>
         <td className="cart_product_img">
           <Image src={thumbnail ?? '/images/core-img/not_found_image.jpg'} alt='name' width={1000} height={1000} className='w-36 h-[auto]'/>
         </td>

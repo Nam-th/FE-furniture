@@ -64,7 +64,7 @@ export default function SignInForm() {
       localStorage.setItem('user', JSON.stringify(userData));
       messageApi.open({
         type: 'success',
-        content: 'Create the product successfully',
+        content: 'Sign in successfully',
       });
       // // Chuyển hướng tới trang chính
       router.push('/');

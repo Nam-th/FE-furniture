@@ -3,16 +3,15 @@ import ProductThumb from './ProductThumb';
 import ProductDesc from './ProductDesc';
 import InputNumber from '@/components/InputNumber';
 import AddToCart from './AddToCart';
+import envConfig from '@/libs/env';
+import axios from 'axios';
 
-const ProductDetailPage = ({ params }: { params: { id: string } }) => {
-  const thumb: string = '/images/product-img/pro-big-1.jpg'
-   
-  const productDesc = {
-    price: 180,
-    name: 'White Modern Chair',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid quae eveniet culpa officia quidem mollitia impedit iste asperiores nisi reprehenderit consequatur, autem, nostrum pariatur enim?',
-  };
+const ProductDetailPage = async ({ params }: { params: { id: string } }) => {
+  const response = await axios.get(
+    `${envConfig.NEXT_PUBLIC_API_ENDPOINT}/api/v1/products/${params.id}`,
+  );
+  const productDesc = response.data.data;
+
   
   return (
     <div className="single-product-area clearfix">
@@ -40,7 +39,7 @@ const ProductDetailPage = ({ params }: { params: { id: string } }) => {
 
         <div className="row">
           <div className="col-12 col-lg-7">
-            <ProductThumb thumb={thumb} />
+            <ProductThumb thumb={productDesc.thumbnail} />
           </div>
           <div className="col-12 col-lg-5">
             <ProductDesc

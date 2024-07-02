@@ -2,8 +2,23 @@ import React from 'react';
 import Category from './Category';
 import Brand from './Brand';
 import { CardProductShop } from '@/components';
+import axios from 'axios';
+import PaginationComponent from '@/components/Pagination/Pagination';
 
-const ProductsPage = () => {
+const ProductsPage = async ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | undefined };
+}) => {
+  const page = searchParams['page']?.toString() ?? '1'; // Trang thứ bao nhiêu, mặc định là 1
+  const size = searchParams['size']?.toString() ?? '5'; // Số sản phẩm hiển thị trên 1 trang
+  const sortBy = searchParams['sort_by']?.toString() ?? 'id'; //Sắp xếp theo thuộc tính, vd: sắp xếp theo 'id'
+  const sortOrder = searchParams['sort_order']?.toString() ?? 'desc'; // Sắp xếp tăng dần | giảm dần
+  const response = await axios.get(
+    `http://localhost:8080/api/v1/products/pagination?page=${page}&size=${size}&sort_by=${sortBy}&sort_order=${sortOrder}`,
+  );
+  const products = response.data.data.items;
+  const totalPage = response.data.data.totalPages;
   const categories = [
     {
       name: 'Chairs',
@@ -45,62 +60,62 @@ const ProductsPage = () => {
     },
   ];
 
-  const products = [
-    {
-      id: 1,
-      name: 'Modern Chair',
-      price: 231,
-      thumbnail: [
-        '/images/product-img/product1.jpg',
-        '/images/product-img/product2.jpg',
-      ],
-    },
-    {
-      id: 2,
-      name: 'Modern Chair',
-      price: 180,
-      thumbnail: [
-        '/images/product-img/product2.jpg',
-        '/images/product-img/product3.jpg',
-      ],
-    },
-    {
-      id: 3,
-      name: 'Modern Chair',
-      price: 180,
-      thumbnail: [
-        '/images/product-img/product3.jpg',
-        '/images/product-img/product4.jpg',
-      ],
-    },
-    {
-      id: 4,
-      name: 'Modern Chair',
-      price: 180,
-      thumbnail: [
-        '/images/product-img/product4.jpg',
-        '/images/product-img/product5.jpg',
-      ],
-    },
-    {
-      id: 5,
-      name: 'Modern Chair',
-      price: 180,
-      thumbnail: [
-        '/images/product-img/product5.jpg',
-        '/images/product-img/product6.jpg',
-      ],
-    },
-    {
-      id: 6,
-      name: 'Modern Chair',
-      price: 180,
-      thumbnail: [
-        '/images/product-img/product6.jpg',
-        '/images/product-img/product1.jpg',
-      ],
-    },
-  ];
+  // const products = [
+  //   {
+  //     id: 1,
+  //     name: 'Modern Chair',
+  //     price: 231,
+  //     thumbnail: [
+  //       '/images/product-img/product1.jpg',
+  //       '/images/product-img/product2.jpg',
+  //     ],
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'Modern Chair',
+  //     price: 180,
+  //     thumbnail: [
+  //       '/images/product-img/product2.jpg',
+  //       '/images/product-img/product3.jpg',
+  //     ],
+  //   },
+  //   {
+  //     id: 3,
+  //     name: 'Modern Chair',
+  //     price: 180,
+  //     thumbnail: [
+  //       '/images/product-img/product3.jpg',
+  //       '/images/product-img/product4.jpg',
+  //     ],
+  //   },
+  //   {
+  //     id: 4,
+  //     name: 'Modern Chair',
+  //     price: 180,
+  //     thumbnail: [
+  //       '/images/product-img/product4.jpg',
+  //       '/images/product-img/product5.jpg',
+  //     ],
+  //   },
+  //   {
+  //     id: 5,
+  //     name: 'Modern Chair',
+  //     price: 180,
+  //     thumbnail: [
+  //       '/images/product-img/product5.jpg',
+  //       '/images/product-img/product6.jpg',
+  //     ],
+  //   },
+  //   {
+  //     id: 6,
+  //     name: 'Modern Chair',
+  //     price: 180,
+  //     thumbnail: [
+  //       '/images/product-img/product6.jpg',
+  //       '/images/product-img/product1.jpg',
+  //     ],
+  //   },
+  // ];
 
   return (
     <>
@@ -255,9 +270,9 @@ const ProductsPage = () => {
           </div>
 
           <div className="row">
-            {products.map((product, index) => (
-              <div key={index} className="col-12 col-sm-6 col-md-12 col-xl-6">
-                <CardProductShop {...product} />
+            {products.map((product: any) => (
+              <div key={product.id} className="col-12 col-sm-6 col-md-12 col-xl-6">
+                <CardProductShop id={product.id} name={product.name} price={product.price} thumbnail={product.thumbnail}/>
               </div>
             ))}
           </div>
@@ -265,30 +280,8 @@ const ProductsPage = () => {
           <div className="row">
             <div className="col-12">
               {/* <!-- Pagination --> */}
-              <nav aria-label="navigation">
-                <ul className="pagination justify-content-end mt-50">
-                  <li className="page-item active">
-                    <a className="page-link" href="#">
-                      01.
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      02.
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      03.
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#">
-                      04.
-                    </a>
-                  </li>
-                </ul>
-              </nav>
+              <div className="py-3"></div>
+      <PaginationComponent totalPage={totalPage} size={size} />
             </div>
           </div>
         </div>

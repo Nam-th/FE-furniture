@@ -168,13 +168,15 @@ export default function AddProductForm({product} : {product? : ProductDto}) {
     }
   }
 
+  let frmClass = 'max-h-[70vh] space-y-8 overflow-y-auto pr-3'
+  if(product) {frmClass = 'max-h-[70vh] space-y-8 pr-3'}
   return (
     <>
       {contextHolder}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="max-h-[70vh] space-y-8 overflow-y-auto pr-3"
+          className={frmClass}
         >
           {/* Name */}
           <FormField

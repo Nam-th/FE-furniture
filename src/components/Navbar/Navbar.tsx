@@ -15,7 +15,7 @@ const Navbar = () => {
         {isAdminRole && (
           <li>
             <Link
-              href="/vi/admin/manageProduct"
+              href="/vi/admin/manageProduct?page=1&size=5&sort_by=id&order_by=desc"
               className="!italic !font-semibold"
             >
               Admin Page
@@ -28,7 +28,7 @@ const Navbar = () => {
         {isLoggedIn && (
           <>
             <li>
-              <Link className='!font-semibold' href="/vi/cart">Cart</Link>
+              <a className='!font-semibold' href="/vi/cart">Cart</a>
             </li>
             <li>
               <Link className='!font-semibold' href="#" >

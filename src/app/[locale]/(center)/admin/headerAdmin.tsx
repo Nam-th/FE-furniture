@@ -7,7 +7,7 @@ export default function HeaderAdmin() {
   return (
     <Header className="bg-white">
       <div className="pb-2 text-end">
-        <span className="font-bold">{username}</span>
+        <span className="font-bold pr-2">{username}</span>
         <Avatar
           className="ml-3 font-bold"
           style={{ backgroundColor: '#fde3cf', color: '#f56a00' }}

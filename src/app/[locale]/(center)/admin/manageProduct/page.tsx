@@ -5,11 +5,11 @@ import AddProductDialog from '@/components/Dialog/AddProductDialog';
 import axios from 'axios';
 import ProductItem from '@/components/Table/product.table';
 
-export default async function ManageProductPage({
+const ManageProductPage = async ({
   searchParams,
 }: {
   searchParams: { [key: string]: string | undefined };
-}) {
+}) => {
   const page = searchParams['page']?.toString() ?? '1'; // Trang thứ bao nhiêu, mặc định là 1
   const size = searchParams['size']?.toString() ?? '5'; // Số sản phẩm hiển thị trên 1 trang
   const sortBy = searchParams['sort_by']?.toString() ?? 'id'; //Sắp xếp theo thuộc tính, vd: sắp xếp theo 'id'
@@ -84,3 +84,4 @@ export default async function ManageProductPage({
     </div>
   );
 }
+export default ManageProductPage;
