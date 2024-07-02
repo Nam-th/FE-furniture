@@ -30,11 +30,11 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem(<Link href="/vi">Home</Link>, '1', <DesktopOutlined />),
+  getItem(<Link href="/vi">Home</Link>, '2', <DesktopOutlined />),
 
   getItem(
     <Link href="/vi/admin/manageProduct">Product</Link>,
-    '2',
+    '1',
     <PieChartOutlined />,
   ),
   getItem('User', 'sub1', <UserOutlined />, [

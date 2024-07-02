@@ -2,28 +2,17 @@ import React from 'react';
 import ProductThumb from './ProductThumb';
 import ProductDesc from './ProductDesc';
 import InputNumber from '@/components/InputNumber';
+import AddToCart from './AddToCart';
+import envConfig from '@/libs/env';
+import axios from 'axios';
 
-const ProductDetailPage = ({ params }: { params: { id: string } }) => {
-  const thumbs: string[] = [
-    '/images/product-img/pro-big-1.jpg',
-    '/images/product-img/pro-big-2.jpg',
-    '/images/product-img/pro-big-3.jpg',
-    '/images/product-img/pro-big-4.jpg',
-  ];
-  const productDesc = {
-    price: 180,
-    name: 'White Modern Chair',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid quae eveniet culpa officia quidem mollitia impedit iste asperiores nisi reprehenderit consequatur, autem, nostrum pariatur enim?',
-  };
-  async function createInvoice(formData: FormData) {
-    'use server';
+const ProductDetailPage = async ({ params }: { params: { id: string } }) => {
+  const response = await axios.get(
+    `${envConfig.NEXT_PUBLIC_API_ENDPOINT}/api/v1/products/${params.id}`,
+  );
+  const productDesc = response.data.data;
 
-    const rawFormData = {
-      quantity: formData.get('quantity'),
-    };
-    console.log(rawFormData);
-  }
+  
   return (
     <div className="single-product-area clearfix">
       <div className="container-fluid">
@@ -50,7 +39,7 @@ const ProductDetailPage = ({ params }: { params: { id: string } }) => {
 
         <div className="row">
           <div className="col-12 col-lg-7">
-            <ProductThumb thumbs={thumbs} />
+            <ProductThumb thumb={productDesc.thumbnail} />
           </div>
           <div className="col-12 col-lg-5">
             <ProductDesc
@@ -59,24 +48,7 @@ const ProductDetailPage = ({ params }: { params: { id: string } }) => {
               description={productDesc.description}
             />
             {/* <!-- Add to Cart Form --> */}
-            <form
-              action={createInvoice}
-              className="cart clearfix"
-              method="post"
-            >
-              <div className="cart-btn d-flex mb-50">
-                <div className="quantity">
-                  <InputNumber />
-                </div>
-              </div>
-              <button
-                type="submit"
-                name="addtocart"
-                className="button button-primary"
-              >
-                Add to cart
-              </button>
-            </form>
+            <AddToCart productId={Number(params.id)}/>
           </div>
         </div>
       </div>

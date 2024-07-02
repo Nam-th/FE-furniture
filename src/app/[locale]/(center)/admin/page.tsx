@@ -1,5 +1,8 @@
+import withAdminAuth from '@/utils/withAuthAdmin';
 import React from 'react';
 
-export default function AdminPage() {
+const AdminPage = () => {
   return <div>Admin</div>;
 }
+
+export default (AdminPage);

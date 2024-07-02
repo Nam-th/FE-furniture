@@ -1,6 +1,5 @@
 'use client';
-import React, { useRef, useState } from 'react';
-import { Spin, message } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Form,
   FormControl,
@@ -14,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
+import { useToast } from '@/components/ui/use-toast';
 import {
   CreateProductBody,
   CreateProductBodyType,
@@ -24,15 +24,12 @@ import CategorySelection from '../Selection/CategoriesSelection';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
-type ProductDto = ProductResType['data'];
+type Product = ProductResType['data'];
 
-
-export default function AddProductForm({product} : {product? : ProductDto}) {
+export default function UpdateProductForm({ product }: { product: Product }) {
   const [file, setFile] = useState<File | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const [loading, setLoading] = useState<boolean>(false)
-  const [messageApi, contextHolder] = message.useMessage();
-  const access_token = localStorage.getItem('access_token');
+  const [access_token, setAccessToken] = useState<string | null>(null);
   const router = useRouter();
   const form = useForm<CreateProductBodyType>({
     resolver: zodResolver(CreateProductBody),
@@ -41,7 +38,6 @@ export default function AddProductForm({product} : {product? : ProductDto}) {
       description: product?.description ?? '',
       price: product?.price ?? 0,
       quantity: product?.quantity ?? 0,
-      sold: product?.sold ?? 0,
       isAvailable: product?.isAvailable ?? true,
       isBestSeller: product?.isBestSeller ?? false,
       isRemoved: product?.isRemoved ?? false,
@@ -49,135 +45,69 @@ export default function AddProductForm({product} : {product? : ProductDto}) {
       imageUrl: product?.thumbnail ?? '',
     },
   });
+  useEffect(() => {
+    setAccessToken(localStorage.getItem('access_token'));
+  }, []);
+  
   const imageUrl = form.watch('imageUrl');
 
-  const createProduct = async (values: CreateProductBodyType) => {
+  // 2. Define a submit handler.
+  async function onSubmit(values: CreateProductBodyType) {
+    let image = imageUrl;
+    const idUpdate: string = product.id.toString();
+    console.log('access_token', access_token);
     try {
-      setLoading(true)
       const formData = new FormData();
       formData.append('image', file as Blob);
-      console.log("check FormData >>",formData);
-      const uploadImageRes = await fetch('http://localhost:8080/api/v1/uploads', {
-        method: 'POST',
-        body: formData,
-        headers: {
-          'Authorization': `Bearer ${access_token}`
+      console.log('check FormData >>', formData);
+      const uploadImageRes = await fetch(
+        'http://localhost:8080/api/v1/uploads',
+        {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Authorization': `Bearer ${access_token}`,
+          },
         },
-        cache: 'no-store'
-      });
+      );
       if (!uploadImageRes.ok) {
         throw new Error(await uploadImageRes.json());
       }
       const uploadResult = await uploadImageRes.json();
-      
-      const image = uploadResult.data
-      
-      const productPayload = {
+
+      image = uploadResult.data;
+
+      const updateData = {
         ...values,
-        thumbnail: image
-      }
-      const createProductResponse = await fetch('http://localhost:8080/api/v1/products', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${access_token}`,
-        },
-        body: JSON.stringify(productPayload),
-        cache: 'no-store'
-      });
-      if (!createProductResponse.ok) {
-        const errorResponse = await createProductResponse.json();
-        throw new Error(errorResponse.message || 'Lỗi tạo sản phẩm');
-      }
-      messageApi.open({
-        type: 'success',
-        content: 'Create the product successfully',
-      });
-      router.push('/vi/admin/manageProduct');
-      router.refresh();
-    } catch (error: any) {
-      alert(error);
-    } finally {
-      setLoading(false)
-    }
-  }
-  const updateProduct = async (_values: UpdateProductBodyType) => {
-    if(!product) return
-    const id = String(product.id)
-    let values=_values;
-    let image = imageUrl;
-    try {
-      setLoading(true)
-      if(file) {
-        const formData = new FormData();
-        formData.append('image', file as Blob);
-        console.log("check FormData >>",formData);
-        const uploadImageRes = await fetch('http://localhost:8080/api/v1/uploads', {
-          method: 'POST',
-          body: formData,
+        thumbnail: image,
+      };
+      const updateProductResponse = await fetch(`http://localhost:8080/api/v1/products/5`,
+        {
+          method: 'PUT',
           headers: {
-            'Authorization': `Bearer ${access_token}`
+            'Authorization': `Bearer ${access_token}`,
           },
-          cache: 'no-store'
-        });
-        if (!uploadImageRes.ok) {
-          throw new Error(await uploadImageRes.json());
+          body: JSON.stringify(updateData),
         }
-        const uploadResult = await uploadImageRes.json();
-        
-        image = uploadResult.data
+      );
+      if (!updateProductResponse.ok) {
+        const errorResponse = await updateProductResponse.json();
+        throw new Error(errorResponse.message || 'Lỗi cập nhật sản phẩm');
       }
-      
-      const productPayload = {
-        ...values,
-        thumbnail: image
-      }
-      const createProductResponse = await fetch(`http://localhost:8080/api/v1/products/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${access_token}`,
-        },
-        body: JSON.stringify(productPayload),
-        cache: 'no-store'
-      });
-      if (!createProductResponse.ok) {
-        const errorResponse = await createProductResponse.json();
-        throw new Error(errorResponse.message || 'Lỗi tạo sản phẩm');
-      }
-      messageApi.open({
-        type: 'success',
-        content: 'Update the product successfully',
-      });
-      router.push('/vi/admin/manageProduct');
-      router.refresh();
+
+      // router.push('/vi/admin/manageProduct');
+      // router.refresh();
     } catch (error: any) {
       alert(error);
-    } finally {
-      setLoading(false)
-    }
-  }
-  // 2. Define a submit handler.
-  const onSubmit = async (values: CreateProductBodyType) => {
-    if (loading) return
-    if(product) {
-      await updateProduct(values)
-    }
-    else {
-      await createProduct(values)
-    }
+      console.log(error)
+    } 
   }
 
-  let frmClass = 'max-h-[70vh] space-y-8 overflow-y-auto pr-3'
-  if(product) {frmClass = 'max-h-[70vh] space-y-8 pr-3'}
   return (
     <>
-      {contextHolder}
+      
       <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className={frmClass}
-        >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 pr-3">
           {/* Name */}
           <FormField
             control={form.control}
@@ -282,6 +212,7 @@ export default function AddProductForm({product} : {product? : ProductDto}) {
                 height={128}
                 alt="preview"
                 className="h-32 w-32 object-cover"
+                priority={true}
               />
               <Button
                 type="button"
@@ -299,8 +230,8 @@ export default function AddProductForm({product} : {product? : ProductDto}) {
               </Button>
             </div>
           )}
-          <Button type="submit" className='w-full'>
-            {!loading ? 'Save' : <Spin/>}
+          <Button type="submit">
+            Save changes
           </Button>
         </form>
       </Form>
