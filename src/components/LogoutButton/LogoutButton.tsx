@@ -11,6 +11,7 @@ export default function LogoutButton() {
       
           // Thực hiện các bước khác nếu cần thiết, ví dụ: chuyển hướng đến trang đăng nhập
          router.push('/vi/')
+         router.refresh()
         };
   return (
     <button onClick={handleLogout} className='button button-secondary'>Logout</button>

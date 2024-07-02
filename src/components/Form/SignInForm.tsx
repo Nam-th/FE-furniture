@@ -107,7 +107,7 @@ export default function SignInForm() {
               </FormItem>
             )}
           />
-          <button type="submit" className="button button-primary w-full">
+          <button type="submit" className="button button-primary ml-0 w-full">
             {loading ? <Spin /> : 'Sign in'}
           </button>
         </form>

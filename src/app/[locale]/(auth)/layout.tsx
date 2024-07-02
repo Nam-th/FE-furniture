@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import '@/styles/globals.css';
+import '../../../styles/style.css';
 import { Footer, Header, Newsletter } from '@/components';
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 

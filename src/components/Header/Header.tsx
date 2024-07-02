@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getUser, isAdmin, isAuthenticated } from '@/utils/auth';
 import { Avatar } from 'antd';
+
 import { LogoutOutlined } from '@ant-design/icons';
 import LogoutButton from '../LogoutButton/LogoutButton';
 
@@ -52,12 +53,12 @@ const Header = () => {
       {/* Button Group */}
       {!isLoggedIn ? (
         <div className="amado-btn-group mt-30 mb-100">
-          <Link href="/vi/sign-in" className="button button-primary">
+          <a href="/vi/sign-in" className="button button-primary">
             Sign in
-          </Link>
-          <Link href="/vi/sign-up" className="button button-secondary mt-3">
+          </a>
+          <a href="/vi/sign-up" className="button button-secondary mt-3">
             Sign up
-          </Link>
+          </a>
         </div>
       ): (
         <LogoutButton/>
