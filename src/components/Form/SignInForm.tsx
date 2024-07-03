@@ -98,7 +98,7 @@ export default function SignInForm() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Password</FormLabel>
                 <FormControl>
                   <Input type="password" placeholder="Password" {...field} />
                 </FormControl>
@@ -107,7 +107,10 @@ export default function SignInForm() {
               </FormItem>
             )}
           />
-          <button type="submit" className="button button-primary ml-0 w-full">
+          <button
+            type="submit"
+            className="btn button button-primary ml-0 w-full"
+          >
             {loading ? <Spin /> : 'Sign in'}
           </button>
         </form>

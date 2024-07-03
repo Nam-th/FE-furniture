@@ -1,6 +1,48 @@
+'use client';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 const CheckoutPage = () => {
+  const total = localStorage.getItem('total');
+  const router = useRouter();
+  const handleCheckout = async () => {
+    try {
+      const access_token = localStorage.getItem('access_token');
+      const response = await axios.post(
+        'http://localhost:8080/api/v1/orders',
+        {
+          customerName: 'Nam',
+          email: 'admin@gmail.com',
+          phone: '0123456789',
+          address: 'Thu Duc',
+          note: 'Giao sau 12h',
+          paymentMethod: 'VNPay',
+          cartItems: [
+            {
+              productId: 1,
+              quantity: 2,
+            },
+            {
+              productId: 2,
+              quantity: 26,
+            },
+          ],
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        },
+      );
+      console.log('ordered:', response.data.data);
+
+      const { paymentUrl } = response.data.data;
+      router.push(paymentUrl);
+    } catch (error) {
+      console.error('Error ordered:', error);
+    }
+  };
   return (
     <div className="cart-table-area section-padding-100">
       <div className="container-fluid">
@@ -13,35 +55,17 @@ const CheckoutPage = () => {
 
               <form action="#" method="post">
                 <div className="row">
-                  <div className="col-md-6 mb-3">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="first_name"
-                      value=""
-                      placeholder="First Name"
-                      required
-                    />
-                  </div>
-                  <div className="col-md-6 mb-3">
+                  <div className="col-12 mb-3">
                     <input
                       type="text"
                       className="form-control"
                       id="last_name"
                       value=""
-                      placeholder="Last Name"
+                      placeholder="Name"
                       required
                     />
                   </div>
-                  <div className="col-12 mb-3">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="company"
-                      placeholder="Company Name"
-                      value=""
-                    />
-                  </div>
+
                   <div className="col-12 mb-3">
                     <input
                       type="email"
@@ -51,7 +75,7 @@ const CheckoutPage = () => {
                       value=""
                     />
                   </div>
-                  <div className="col-12 mb-3">
+                  {/* <div className="col-12 mb-3">
                     <select className="w-100" id="country">
                       <option value="usa">United States</option>
                       <option value="uk">United Kingdom</option>
@@ -62,7 +86,7 @@ const CheckoutPage = () => {
                       <option value="bra">Brazil</option>
                       <option value="cana">Canada</option>
                     </select>
-                  </div>
+                  </div> */}
                   <div className="col-12 mb-3">
                     <input
                       type="text"
@@ -76,30 +100,12 @@ const CheckoutPage = () => {
                     <input
                       type="text"
                       className="form-control"
-                      id="city"
-                      placeholder="Town"
+                      id="phone"
+                      placeholder="Phone"
                       value=""
                     />
                   </div>
-                  <div className="col-md-6 mb-3">
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="zipCode"
-                      placeholder="Zip Code"
-                      value=""
-                    />
-                  </div>
-                  <div className="col-md-6 mb-3">
-                    <input
-                      type="number"
-                      className="form-control"
-                      id="phone_number"
-                      min="0"
-                      placeholder="Phone No"
-                      value=""
-                    />
-                  </div>
+
                   <div className="col-12 mb-3">
                     <textarea
                       name="comment"
@@ -120,7 +126,7 @@ const CheckoutPage = () => {
                         className="custom-control-label"
                         htmlFor="customCheck2"
                       >
-                        Create an accout
+                        Create an account
                       </label>
                     </div>
                     <div className="custom-control custom-checkbox d-block">
@@ -146,13 +152,13 @@ const CheckoutPage = () => {
               <h5 className="font-semibold">Cart Total</h5>
               <ul className="summary-table">
                 <li>
-                  <span>subtotal:</span> <span>$140.00</span>
+                  <span>subtotal:</span> <span>{total}</span>
                 </li>
                 <li>
                   <span>delivery:</span> <span>Free</span>
                 </li>
                 <li>
-                  <span>total:</span> <span>$140.00</span>
+                  <span>total:</span> <span>{total}</span>
                 </li>
               </ul>
 
@@ -188,9 +194,12 @@ const CheckoutPage = () => {
               </div>
 
               <div className="cart-btn mt-100">
-                <a href="#" className="btn amado-btn     w-100 rounded-md">
+                <button
+                  className="btn amado-btn  w-100 rounded-md"
+                  onClick={handleCheckout}
+                >
                   Checkout
-                </a>
+                </button>
               </div>
             </div>
           </div>

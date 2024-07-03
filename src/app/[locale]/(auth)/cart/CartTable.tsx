@@ -28,12 +28,16 @@ export default function CartTable() {
       }
 
       try {
-        const response = await axios.get('http://localhost:8080/api/v1/carts/pagination', {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
+        const response = await axios.get(
+          'http://localhost:8080/api/v1/carts/pagination',
+          {
+            headers: {
+              Authorization: `Bearer ${access_token}`,
+            },
           },
-        });
-
+        );
+        const firstItemTotalPrice = response.data.data.items[0].totalPrice;
+        localStorage.setItem('total', firstItemTotalPrice);
         if (response.status === 200) {
           setCartItems(response.data.data.items);
         } else {
@@ -54,7 +58,7 @@ export default function CartTable() {
   if (isLoading) {
     return (
       <>
-        <div className="flex items-center space-x-4 mb-4">
+        <div className="mb-4 flex items-center space-x-4">
           <Skeleton className="h-12 w-12 rounded-full" />
           <div className="space-y-2">
             <Skeleton className="h-4 w-[250px]" />

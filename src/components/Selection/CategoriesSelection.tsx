@@ -14,19 +14,19 @@ export default function CategorySelection({ name }: { name: string }) {
   const categories = [
     {
       id: 1,
-      name: 'Bàn cà phê',
+      name: 'Table',
     },
     {
       id: 2,
-      name: 'Đèn ngủ',
+      name: 'Light',
     },
     {
       id: 3,
-      name: 'Đèn trang trí',
+      name: 'Decoration',
     },
     {
       id: 4,
-      name: 'Bộ rèm cửa',
+      name: 'Cushion',
     },
   ];
 
