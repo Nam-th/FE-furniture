@@ -11,6 +11,7 @@ import { Menu } from 'antd';
 
 import type { MenuProps } from 'antd';
 import Image from 'next/image';
+import WithAdminAuth from '@/components/withAdminAuth/withAdminAuth';
 
 type MenuItem = Required<MenuProps>['items'][number];
 
@@ -69,6 +70,7 @@ export default function MenuAdmin() {
         mode="inline"
         items={items}
       />
+      <WithAdminAuth />
     </>
   );
 }

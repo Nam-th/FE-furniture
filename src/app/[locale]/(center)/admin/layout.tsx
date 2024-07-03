@@ -1,11 +1,13 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Breadcrumb, Layout, theme } from 'antd';
 import { AntdRegistry } from '@ant-design/nextjs-registry';
 import MenuAdmin from './menuAdmin';
 import FooterAdmin from './footerAdmin';
 import HeaderAdmin from './headerAdmin';
+import { usePathname, useRouter } from 'next/navigation';
+import { getUser } from '@/utils/auth';
 
 const { Content, Sider } = Layout;
 
@@ -18,7 +20,21 @@ const App = ({
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+  const router = useRouter();
+  const pathname = usePathname();
 
+  useEffect(() => {
+    const user = getUser();
+    if (!user || user.scope !== 'ADMIN') {
+      if (pathname.includes('/admin')) {
+        router.replace('/vi');
+        return
+      }
+    }
+  }, [pathname]);
+
+  const user = getUser();
+    if (!user || user.scope !== 'ADMIN') return 
   return (
     <AntdRegistry>
       <Layout style={{ minHeight: '100vh' }}>
